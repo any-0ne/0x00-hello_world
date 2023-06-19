@@ -1,8 +1,8 @@
 #include<stdio.h>
 /**
- * main - Doc
+ * main - Entry point
  *
- * Return : O SUCCES
+ * Return: Always 0 (Success)
  */
 int main(void)
 {
