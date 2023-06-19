@@ -2,7 +2,7 @@
 /**
  * main - Doc
  *
- * Return O SUCCES
+ * Return : O SUCCES
  */
 int main(void)
 {
