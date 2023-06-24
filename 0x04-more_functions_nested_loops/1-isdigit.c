@@ -2,6 +2,7 @@
 
 /**
  * _isdigit - checks if c is a  number between 0 to 9.
+ * @c: param
  * Return: 1 if is a number (0 to 9), 0 in otherwise.
  */
 int _isdigit(int c)
