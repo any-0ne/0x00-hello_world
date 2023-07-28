@@ -9,17 +9,18 @@
 size_t print_list(const list_t *myList)
 {
 	size_t nb;
-	list_t copyList = myList;
+	const list_t* firstList = myList;
 
 	nb = 0;
-	while (copyList != NULL)
+	while (myList != NULL)
 	{
-		if (copyList->str == NULL)
+		if (myList->str == NULL)
 			printf("[%d] %s\n", 0, "(nil)");
 		else
-			printf("[%d] %s\n", copyList->len, copyList->str);
-		copyList = copyList->next;
+			printf("[%d] %s\n", myList->len, myList->str);
+		myList = myList->next;
 		nb++;
 	}
+	myList = firstList;
 	return (nb);
 }
