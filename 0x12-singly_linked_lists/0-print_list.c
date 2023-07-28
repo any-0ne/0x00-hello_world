@@ -6,18 +6,19 @@
  * Return: number of elements in the list
  */
 
-size_t print_list(const list_t *h)
+size_t print_list(const list_t *myList)
 {
 	size_t nb;
+	list_t copyList = myList;
 
 	nb = 0;
-	while (h != NULL)
+	while (copyList != NULL)
 	{
-		if (h->str == NULL)
+		if (copyList->str == NULL)
 			printf("[%d] %s\n", 0, "(nil)");
 		else
-			printf("[%d] %s\n", h->len, h->str);
-		h = h->next;
+			printf("[%d] %s\n", copyList->len, copyList->str);
+		copyList = copyList->next;
 		nb++;
 	}
 	return (nb);
