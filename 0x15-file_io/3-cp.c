@@ -23,27 +23,28 @@ void exitWithError(int code, const char *message, const char *arg)
 
 int main(int argc, char *argv[])
 {
+	int fd_from, fd_to;
+	char buffer[1024];
+	ssize_t bytes_read, bytes_written;
+
 	if (argc != 3)
 	{
 		exitWithError(97, "Usage: cp file_from file_to\n", "");
 	}
 
-	int fd_from = open(argv[1], O_RDONLY);
+	fd_from = open(argv[1], O_RDONLY);
 
 	if (fd_from == -1)
 	{
 		exitWithError(98, "Error: Can't read from file %s\n", argv[1]);
 	}
 
-	int fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
+	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
 
 	if (fd_to == -1)
 	{
 		exitWithError(99, "Error: Can't write to %s\n", argv[2]);
 	}
-
-	char buffer[1024];
-	ssize_t bytes_read, bytes_written;
 
 	while ((bytes_read = read(fd_from, buffer, 1024)) > 0)
 	{
