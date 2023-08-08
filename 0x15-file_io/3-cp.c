@@ -1,8 +1,7 @@
 #include "main.h"
 
-#define BUFFER_SIZE 1024
-
-/* exitWithError - print error code and message
+/**
+ * exitWithError - print error code and message
  * @code: error code
  * @message: error string
  * @arg: string arguments
@@ -15,7 +14,8 @@ void exitWithError(int code, const char *message, const char *arg)
 	exit(code);
 }
 
-/* main - copy a file to another and handle errors
+/**
+ * main - copy a file to another and handle errors
  * @argc: arguments counter
  * @argv: arguments vector
  * Return: if SUCCESS 0, if not error code.
@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
         	exitWithError(99, "Error: Can't write to %s\n", argv[2]);
     	}
 
-    	char buffer[BUFFER_SIZE];
+    	char buffer[1024];
     	ssize_t bytes_read, bytes_written;
 
-    	while ((bytes_read = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+    	while ((bytes_read = read(fd_from, buffer, 1024)) > 0)
     	{
 		bytes_written = write(fd_to, buffer, bytes_read);
         
