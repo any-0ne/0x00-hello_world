@@ -8,7 +8,22 @@
 #include <sys/stat.h>
 #define ELF_MAGIC_SIZE 16
 
-typedef struct
+/**
+ * Elf64_Ehdr - Typedef for struct Elf64
+ */
+
+typedef struct Elf64_Ehdr Elf64_Ehdr;
+
+/**
+ * struct Elf64_Ehdr - struct that stores ELF informations
+ * @e_ident: store ident
+ * @e_type: store type
+ * @e_machine: store machine
+ *
+ * Description:  stores ELF informations.
+ */
+
+struct Elf64_Ehdr
 {
 	unsigned char e_ident[ELF_MAGIC_SIZE];
 	uint16_t e_type;
@@ -24,20 +39,33 @@ typedef struct
 	uint16_t e_shentsize;
 	uint16_t e_shnum;
 	uint16_t e_shstrndx;
-}
+};
 
-Elf64_Ehdr;
+/**
+ * exitWithError - print error message and exit with code
+ * @message: string error
+ * Return: void.
+ */
 
 void exitWithError(const char *message)
 {
-	fprintf(stderr, "Error: %s\n", message);
+	dprintf(STDERR_FILENO, "Error: %s\n", message);
 	exit(98);
 }
 
+/**
+ * print_elf_header - peint ELF information
+ * @header: Elf64 struct to print
+ * Return: void.
+ */
+
 void print_elf_header(const Elf64_Ehdr *header)
 {
+	unsigned char osabi = header->e_ident[7];
+	int i;
+	
 	printf("  Magic:   ");
-	for (int i = 0; i < ELF_MAGIC_SIZE; ++i)
+	for (i = 0; i < ELF_MAGIC_SIZE; ++i)
 	{
 		printf("%02x ", header->e_ident[i]);
 	}
@@ -73,7 +101,7 @@ void print_elf_header(const Elf64_Ehdr *header)
 	printf("  Version:                           %d (current)\n", header->e_ident[6]);
 
 	printf("  OS/ABI:                            ");
-	unsigned char osabi = header->e_ident[7];
+	
 	if (osabi == 0)
 		printf("UNIX - System V\n");
 	else if (osabi == 2)
@@ -107,23 +135,33 @@ void print_elf_header(const Elf64_Ehdr *header)
 	printf("  Entry point address:               0x%lx\n", (unsigned long) header->e_entry);
 }
 
+/**
+ * main - main function for checking file and print ELF info
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: if SUCCESS 0, if not ERROR CODE.
+ */
+
 int main(int argc, char *argv[])
 {
+	int fd;
+	ssize_t bytes_read;
+	Elf64_Ehdr header;
+
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+		dprintf(STDERR_FILENO, "Usage: %s elf_filename\n", argv[0]);
 		return (98);
 	}
 
-	const char *filename = argv[1];
-	int fd = open(filename, O_RDONLY);
+	fd = open(argv[1], O_RDONLY);
+
 	if (fd == -1)
 	{
 		exitWithError("Could not open the file");
 	}
 
-	Elf64_Ehdr header;
-	ssize_t bytes_read = read(fd, &header, sizeof(header));
+	bytes_read = read(fd, &header, sizeof(header));
 	if (bytes_read != sizeof(header))
 	{
 		close(fd);
