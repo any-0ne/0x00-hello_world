@@ -17,10 +17,21 @@ typedef struct Elf64_Ehdr Elf64_Ehdr;
 /**
  * struct Elf64_Ehdr - struct that stores ELF informations
  * @e_ident: store ident
- * @e_type: store type
- * @e_machine: store machine
+ * @e_type: type
+ * @e_machine: machine
+ * @e_version: version
+ * @e_entry: entry
+ * @e_phoff: phoff
+ * @e_shoff: shoff
+ * @e_flags: flags
+ * @e_ehsize: ehsize
+ * @e_phentsize: phentsize
+ * @e_phnum: phnum
+ * @e_shentsize: shentsize
+ * @e_shnum: shnum
+ * @e_shstrndx: shstrndx
  *
- * Description:  stores ELF informations.
+ * Description: stores ELF informations.
  */
 
 struct Elf64_Ehdr
@@ -54,7 +65,7 @@ void exitWithError(const char *message)
 }
 
 /**
- * print_elf_header - peint ELF information
+ * print_elf_header - print ELF informations
  * @header: Elf64 struct to print
  * Return: void.
  */
@@ -63,7 +74,7 @@ void print_elf_header(const Elf64_Ehdr *header)
 {
 	unsigned char osabi = header->e_ident[7];
 	int i;
-	
+
 	printf("  Magic:   ");
 	for (i = 0; i < ELF_MAGIC_SIZE; ++i)
 	{
@@ -101,7 +112,7 @@ void print_elf_header(const Elf64_Ehdr *header)
 	printf("  Version:                           %d (current)\n", header->e_ident[6]);
 
 	printf("  OS/ABI:                            ");
-	
+
 	if (osabi == 0)
 		printf("UNIX - System V\n");
 	else if (osabi == 2)
@@ -136,7 +147,7 @@ void print_elf_header(const Elf64_Ehdr *header)
 }
 
 /**
- * main - main function for checking file and print ELF info
+ * main - main function for checking ELF informations
  * @argc: argument count
  * @argv: argument vector
  * Return: if SUCCESS 0, if not ERROR CODE.
